@@ -1,6 +1,23 @@
 # inventory_2022 (Work in Progress)
 Public repository for the biodata resource inventory performed in 2022.
 
+## 0. Setup + Generating training files
+###### 
+The model assumes that the following two files are under the `data` folder: 
+- extracted_elements_2022-02-24_hij.csv
+- manual_classifications.csv
+
+1. Generate training files for the Paper Classification model: <br>
+```python paper_classif_training_data_generator.py ``` -> `train_paper_classif.csv`, `val_paper_classif.csv` and `test_paper_classif.csv` should be under `data`.
+2. Generate training files for the NER model: <br>
+```python ner_training_data_generator.py ``` -> `ner_train.pkl`, `ner_val.pkl`, `ner_test.pkl` should be under `data`.
+3. Download the following checkpoints: 
+- [BiomedRoberta Paper Classification Model Checkpt](https://drive.google.com/file/d/1qYDZvkpYqDWSIBLZg8J8x-Yzv4Fvuom0/view?usp=sharing) <br> 
+Metrics: ```F1: 0.9489051095	Precision: 0.9701492537	Recall: 0.9285714286``` <br>
+- [BiomedRoberta NER Model Chekpt](https://drive.google.com/file/d/1qYDZvkpYqDWSIBLZg8J8x-Yzv4Fvuom0/view?usp=sharing) <br>
+Metrics: ```F1: 0.769	Precision: 0.715	Recall: 0.832``` <br>
+and add them under the `checkpts` folder
+
 ## I. Paper Clasification
 ###### 
 **Task**: Predict if a paper is about a bio-data resource or not
@@ -12,20 +29,20 @@ Public repository for the biodata resource inventory performed in 2022.
 #### Usage
 1. ``` pip install -r requirements.txt```
 2. For sanity checking: <br>
-``` python train.py --num-training 100 --num-epochs 1 --sanity-check ```
+``` python paper_classif_trainer.py --num-training 100 --num-epochs 1 --sanity-check ```
 
 3. To run on the entire data: <br>
-``` python train.py --train-file 'path_to_train_data' --val-file 'path_to_val_data' ``` <br>
+``` python paper_classif_trainer.py --train-file 'path_to_train_data' --val-file 'path_to_val_data' ``` <br>
 
-if --train-file and --val-file are not provided, the model assumes they are under ```data/train.csv``` and ```data/val.csv```
+if --train-file and --val-file are not provided, the model assumes they are under ```data/train_paper_classif.csv``` and ```data/val_paper_classif.csv```
 There are a number of other parameters that can be passed as command line arguments. The list of all arguments is:
 
 | argument | usage | default_value |
 | :- | :- | :-|
-| train-file | Location of training file |'data/train.csv' | 
-| val-file | Location of validation file | 'data/val.csv'| 
-| test-file | Location of test file |'data/test.csv' | 
-| model-name | Name of model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500'] | 'scibert'| 
+| train-file | Location of training file |'data/train_paper_classif.csv' | 
+| val-file | Location of validation file | 'data/val_paper_classif.csv'| 
+| test-file | Location of test file |'data/test_paper_classif.csv' | 
+| model-name | Name of model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_fulltext', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct500'] | 'scibert'| 
 | predictive-field | Field in the dataframes to use for prediction. Can be one of ['title', 'abstract', 'title_abstract'] | 'title'| 
 | labels-field | Field in the dataframes corresponding to the scores (0, 1) | 'curation_score'| 
 | descriptive-labels | Descriptive labels corresponding to the [0, 1] numeric scores |['not-bio-resource', 'bio-resource'] | 
@@ -39,7 +56,7 @@ There are a number of other parameters that can be passed as command line argume
 | weight-decay | Weight Decay for Learning Rate | 0.0 | 
 | lr-scheduler | True if using a Learning Rate Scheduler. More info here: https://huggingface.co/docs/transformers/main_classes/optimizer_schedules | False| 
 
-After training, a checkpoint will be saved under ```output_dir```.
+After training, a checkpoint will be saved under ```checkpts```.
 <!-- #### Experiments -->
 
 #### Hyperparameters
@@ -63,14 +80,50 @@ After training, a checkpoint will be saved under ```output_dir```.
 |biomed_roberta_rct_500|'allenai/dsp_roberta_base_dapt_biomed_tapt_rct_500'|2e-5|16|0|False|
 
 ### Prediction
-Example: ``` python predict.py --input-file data/val.csv``` <br>
-Requires a checkpoint from a trained model to be under ```output_dir/checkpoint``` <br>
+Example: ``` python paper_classif_predict.py --input-file data/val_paper_classif.csv``` <br>
+Requires a checkpoint from a trained model to be under ```checkpts/checkpoint``` <br>
 One checkpoint from a model trained on BiomedRoberta can be downloaded from here: [Google Drive Link](https://drive.google.com/file/d/1qYDZvkpYqDWSIBLZg8J8x-Yzv4Fvuom0/view?usp=sharing)<br>
 Metrics for the checkpoint above: ```F1: 0.9489051095	Precision: 0.9701492537	Recall: 0.9285714286```
 
 
 ## II. NER Model
 ###### 
+**Task**: Retrieve mentions of bio-data resources <br>
+Similarly to the Paper Classification Model:
+
+1. For sanity checking: <br>
+``` python ner_trainer.py --num-epochs 1 --sanity-check ```
+
+2. To run on the entire data: <br>
+``` python ner_trainer.py --train-file 'path_to_train_data' --val-file 'path_to_val_data' ``` <br>
+if --train-file and --val-file are not provided, the model assumes they are under ```data/ner_train.pkl``` and ```data/ner_val.pkl```
+
+### Prediction
+Example: ``` python ner_predictor.py``` <br> will run predictions on some given examples <br>
+Requires a checkpoint from a trained model to be under ```checkpts/checkpoint``` <br>
+One checkpoint from a model trained on BiomedRoberta can be downloaded from here: [Google Drive Link](https://drive.google.com/file/d/1OW3QJ2q89bQLzJNUtjMqnfONH4gU1iEI/view?usp=sharing)<br>
+Metrics for the checkpoint above: ```F1: 0.769	Precision: 0.715	Recall: 0.832```
+
+
+## III. URL Extraction
+###### 
+**Task**: Extract mentions of URLs using a regular expression <br>
+``` python url_predictor.py --input-file 'path_to_input_file' --output-file 'path_to_output_file' ``` <br>
+add the --predict-only flag if you are doing extraction on new data. Otherwise model assumes the input_file already has an 'url' field and will attempt to compute metrics.
+
+## IV. End2End Pipeline
+###### 
+To run both models (Paper Classification + NER model): <br>
+``` python pipeline.py --papers-file 'path_to_file' ``` <br>
+The file needs to have a `title` and an `abstract` field. <br>
+Running ``` python pipeline.py ``` <br> simply runs prediction on `data/val_paper_classif.csv` file. <br>
+This portion requires trained checkpoints for both the paper_classification and NER models. Chekpoints can be downloaded from here: <br>
+- `paper-classif-checkpt`: [BiomedRoberta Paper Classification Model Checkpt](https://drive.google.com/file/d/1qYDZvkpYqDWSIBLZg8J8x-Yzv4Fvuom0/view?usp=sharing) <br> 
+Metrics: ```F1: 0.9489051095	Precision: 0.9701492537	Recall: 0.9285714286``` <br>
+- `ner-checkpt`: [BiomedRoberta NER Model Chekpt](https://drive.google.com/file/d/1qYDZvkpYqDWSIBLZg8J8x-Yzv4Fvuom0/view?usp=sharing) <br>
+Metrics: ```F1: 0.769	Precision: 0.715	Recall: 0.832``` <br>
+It also has an optional capability to run the pipeline on papers retrieved from a EuropePMC query: <br>
+``` python pipeline.py --query-europepmc --query cancer ```
 
 ## DATA DICTIONARIES
 
