@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
 	parser.add_argument('--paper-classif-output-file', type=str, default = 'output_dir/preds_paper_classifications.csv', help = 'Output file containing Paper Classification predictions')
 	parser.add_argument('--ner-output-file', type=str, default = 'output_dir/preds_ner.csv', help = 'Output file containing NER predictions')
-	parser.add_argument('--query_europepmc', type=bool, default=False)
+	parser.add_argument('--query_europepmc', action = 'store_true')
 	parser.add_argument('--papers-file', type=str, default = 'data/val_paper_classif.csv')
 	
 	parser.add_argument('--descriptive-labels', type=str, default=['not-bio-resource', 'bio-resource'], help = "Descriptive labels corresponding to the [0, 1] numeric scores")
