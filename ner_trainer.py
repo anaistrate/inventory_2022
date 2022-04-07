@@ -193,7 +193,7 @@ if __name__ == '__main__':
   parser.add_argument('--weight_decay', type=float, default=0.01, help = 'Weight Decay for Learning Rate')
   parser.add_argument('--lr_scheduler', action = 'store_true', help = 'True if using a Learning Rate Scheduler. More info here: https://huggingface.co/docs/transformers/main_classes/optimizer_schedules')
   parser.add_argument('--use-default-values', type=bool, default=True, help = 'True if to use default values available in ner_utils.py')
-  parser.add_argument('--model_name', type=str, default='scibert', help = "Name of model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500']")
+  parser.add_argument('--model_name', type=str, default='biomed_roberta', help = "Name of model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500']")
   parser.add_argument('--output-dir', type=str, default='checkpts', help = 'Default directory to output checkpt and plot losses')
   parser.add_argument('--train_file', type=str, default = 'data/ner_train.pkl', help = 'Location of training file. Note that it has to be in a .pkl format')
   parser.add_argument('--val_file', type=str, default = 'data/ner_val.pkl', help = 'Location of val file. Note that it has to be in a .pkl format')

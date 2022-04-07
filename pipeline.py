@@ -40,9 +40,9 @@ if __name__ == '__main__':
 	parser.add_argument('--query', type=str, default = 'cancer')
 
 	parser.add_argument('--paper-classif-checkpt', type=str, default = 'checkpts/checkpt_biomed_roberta_title_abstract_512_10_epochs', help = 'Location of saved checkpoint file for Paper Classification task.')
-	parser.add_argument('--ner-checkpt', type=str, default = 'checkpts/checkpt_ner_pubmedbert_fulltext_7_epochs', help = 'Location of saved checkpoint file for NER task.')
+	parser.add_argument('--ner-checkpt', type=str, default = 'checkpts/checkpt_ner_biomed_roberta_2_epochs', help = 'Location of saved checkpoint file for NER task.')
 	parser.add_argument('--paper-classif-model-name', type=str, default='biomed_roberta', help = "Name of Paper Classification model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500']")
-	parser.add_argument('--ner-model-name', type=str, default='pubmedbert_fulltext', help = "Name of NER model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500']")
+	parser.add_argument('--ner-model-name', type=str, default='biomed_roberta', help = "Name of NER model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500']")
 
 	parser.add_argument('--paper-classif-output-file', type=str, default = 'output_dir/preds_paper_classifications.csv', help = 'Output file containing Paper Classification predictions')
 	parser.add_argument('--ner-output-file', type=str, default = 'output_dir/preds_ner.csv', help = 'Output file containing NER predictions')

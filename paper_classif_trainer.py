@@ -174,7 +174,7 @@ if __name__ == '__main__':
   parser.add_argument('--train-file', type=str, default='data/train_paper_classif.csv', help = 'Location of training file')
   parser.add_argument('--val-file', type=str, default='data/val_paper_classif.csv', help = 'Location of validation file')
   parser.add_argument('--test-file', type=str, default='data/test_paper_classif.csv', help = 'Location of test file')
-  parser.add_argument('--model-name', type=str, default='scibert', help = "Name of model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500']")
+  parser.add_argument('--model-name', type=str, default='biomed_roberta', help = "Name of model to try. Can be one of: ['bert', 'biobert', 'scibert', 'pubmedbert', 'pubmedbert_pmc', 'bluebert', 'bluebert_mimic3', 'sapbert', 'sapbert_mean_token', 'bioelectra', 'bioelectra_pmc', 'electramed', 'biomed_roberta', 'biomed_roberta_chemprot', 'biomed_roberta_rct_500']")
   parser.add_argument('--predictive-field', type=str, default='title', help = "Field in the dataframes to use for prediction. Can be one of ['title', 'abstract', 'title-abstract']")
   parser.add_argument('--labels-field', type=str, default='curation_score', help = "Field in the dataframes corresponding to the scores (0, 1)")
   parser.add_argument('--descriptive-labels', type=str, default=['not-bio-resource', 'bio-resource'], help = "Descriptive labels corresponding to the [0, 1] numeric scores")
